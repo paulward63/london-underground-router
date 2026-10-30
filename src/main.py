@@ -1,86 +1,7 @@
 import json
-
-
-def display_route(route):
-    print("\nYour journey:")
-
-    for number, station in enumerate(route, start=1):
-        print(f"{number}. {station}")
-
-    print(f"\nStops travelled: {len(route) - 1}")
-
-
-def calculate_route(stations, start_station, destination):
-
-    start_index = stations.index(start_station)
-    destination_index = stations.index(destination)
-
-    if start_index < destination_index:
-        route = stations[start_index : destination_index + 1]
-
-    elif start_index > destination_index:
-        route = stations[destination_index : start_index + 1]
-        route.reverse()
-
-    else:
-        route = [start_station]
-
-    return route
-
-
-def find_station_lines(underground, station_name):
-    lines = []
-
-    for line_name, stations in underground.items():
-        if station_name in stations:
-            lines.append(line_name)
-
-    return lines
-
-
-def find_best_interchange(
-    underground, start_station, destination, interchanges, start_line, destination_line
-):
-
-    best_route = None
-    best_interchange = None
-
-    for interchange in interchanges:
-
-        first_route = calculate_route(
-            underground[start_line], start_station, interchange
-        )
-
-        second_route = calculate_route(
-            underground[destination_line], interchange, destination
-        )
-
-        complete_route = first_route + second_route[1:]
-
-        if best_route is None or len(complete_route) < len(best_route):
-            best_route = complete_route
-            best_interchange = interchange
-
-    return best_route, best_interchange
-
-def find_common_lines(start_lines, destination_lines):
-
-    common_lines = []
-
-    for line in start_lines:
-        if line in destination_lines:
-            common_lines.append(line)
-
-    return common_lines
-
-def find_interchanges(underground, first_line, second_line):
-    interchanges = []
-
-    for station in underground[first_line]:
-        if station in underground[second_line]:
-            interchanges.append(station)
-
-    return interchanges
+from display import display_route
+from stations import find_station_lines, find_common_lines, find_interchanges
+from routing import calculate_route, find_best_interchange
 
 with open("data/stations.json", "r") as file:
     underground = json.load(file)
@@ -100,6 +21,21 @@ if not common_lines:
     print("Different lines detected")
     print("Possible starting lines:", start_lines)
     print("Possible destination lines:", destination_lines)
+
+    for start_line in start_lines:
+        for destination_line in destination_lines:
+            print("Checking:", start_line, "->", destination_line)
+
+            possible_interchanges = find_interchanges(
+                underground, start_line, destination_line
+        )
+
+        print("Shared stations:", possible_interchanges)
+
+
+        if possible_interchanges:
+            print("These lines connect!")
+
 
 if common_lines:
 
