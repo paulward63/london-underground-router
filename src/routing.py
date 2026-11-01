@@ -40,3 +40,24 @@ def find_best_interchange(
             best_interchange = interchange
 
     return best_route, best_interchange
+
+
+def find_shortest_route(network, start_station, destination):
+    queue = [[start_station]]
+    visited = [start_station]
+
+    while queue:
+        route = queue.pop(0)
+        current_station = route[-1]
+
+        if current_station == destination:
+            return route
+
+        for connected_station in network[current_station]:
+            if connected_station not in visited:
+                visited.append(connected_station)
+
+                new_route = route + [connected_station]
+                queue.append(new_route)
+
+    return None
