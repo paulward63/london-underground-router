@@ -2,20 +2,28 @@ def build_graph(underground):
     graph = {}
 
     for line_name, stations in underground.items():
-        for i in range(len(stations) - 1):
-            station_a = stations[i]
-            station_b = stations[i + 1]
 
-            if station_a not in graph:
-                graph[station_a] = []
+        if isinstance(stations, dict):
+            station_lists = stations.values()
+        else:
+            station_lists = [stations]
 
-            if station_b not in graph:
-                graph[station_b] = []
+        for station_list in station_lists:
 
-            if station_b not in graph[station_a]:
-                graph[station_a].append(station_b)
+            for i in range(len(station_list) - 1):
+                station_a = station_list[i]
+                station_b = station_list[i + 1]
 
-            if station_a not in graph[station_b]:
-                graph[station_b].append(station_a)
+                if station_a not in graph:
+                    graph[station_a] = []
+
+                if station_b not in graph:
+                    graph[station_b] = []
+
+                if station_b not in graph[station_a]:
+                    graph[station_a].append(station_b)
+
+                if station_a not in graph[station_b]:
+                    graph[station_b].append(station_a)
 
     return graph
