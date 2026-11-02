@@ -27,3 +27,27 @@ def build_graph(underground):
                     graph[station_b].append(station_a)
 
     return graph
+
+
+def find_connection_lines(underground, station_a, station_b):
+    connecting_lines = []
+
+    for line_name, stations in underground.items():
+
+        if isinstance(stations, dict):
+            station_lists = stations.values()
+        else:
+            station_lists = [stations]
+
+        for station_list in station_lists:
+            for i in range(len(station_list) - 1):
+
+                if (
+                    station_list[i] == station_a and station_list[i + 1] == station_b
+                ) or (
+                    station_list[i] == station_b and station_list[i + 1] == station_a
+                ):
+                    if line_name not in connecting_lines:
+                        connecting_lines.append(line_name)
+
+    return connecting_lines

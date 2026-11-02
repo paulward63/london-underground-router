@@ -1,3 +1,5 @@
+from graph import find_connection_lines
+
 def calculate_route(stations, start_station, destination):
 
     start_index = stations.index(start_station)
@@ -61,3 +63,48 @@ def find_shortest_route(network, start_station, destination):
                 queue.append(new_route)
 
     return None
+
+
+def find_all_shortest_routes(network, start_station, destination):
+    queue = [[start_station]]
+    shortest_routes = []
+    shortest_length = None
+
+    while queue:
+        route = queue.pop(0)
+
+        if shortest_length is not None and len(route) > shortest_length:
+            break
+
+        current_station = route[-1]
+
+        if current_station == destination:
+            shortest_routes.append(route)
+            shortest_length = len(route)
+            continue
+
+        for connected_station in network[current_station]:
+            if connected_station not in route:
+                new_route = route + [connected_station]
+                queue.append(new_route)
+
+    return shortest_routes
+
+def count_interchanges(underground, route):
+    previous_line = None
+    interchange_count = 0
+
+    for i in range(len(route) - 1):
+        station_a = route[i]
+        station_b = route[i + 1]
+
+        lines = find_connection_lines(underground, station_a, station_b)
+
+        current_line = lines[0]
+
+        if previous_line is not None and current_line != previous_line:
+            interchange_count += 1
+
+        previous_line = current_line
+
+    return interchange_count
