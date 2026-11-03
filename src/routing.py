@@ -91,20 +91,26 @@ def find_all_shortest_routes(network, start_station, destination):
     return shortest_routes
 
 def count_interchanges(underground, route):
-    previous_line = None
+    previous_lines = set()
     interchange_count = 0
 
     for i in range(len(route) - 1):
         station_a = route[i]
         station_b = route[i + 1]
 
-        lines = find_connection_lines(underground, station_a, station_b)
+        lines = set(find_connection_lines(underground, station_a, station_b))
 
-        current_line = lines[0]
+        if previous_lines:
+            common_lines = previous_lines & lines
 
-        if previous_line is not None and current_line != previous_line:
-            interchange_count += 1
+            if common_lines:
+               previous_lines = common_lines
+            else:
 
-        previous_line = current_line
+               interchange_count += 1
+               previous_lines = lines
+            
+        else:
+            previous_lines = lines
 
     return interchange_count
