@@ -1,3 +1,5 @@
+from graph import find_connection_lines
+
 def display_route(route):
     print("\nYour journey:")
 
@@ -5,4 +7,30 @@ def display_route(route):
         print(f"{number}. {station}")
 
     print(f"\nStops travelled: {len(route) - 1}")
-    
+
+
+def display_journey_lines(underground, route):
+    print("\nJourney line instructions:")
+
+    current_line = None
+
+    for i in range(len(route) - 1):
+        station_a = route[i]
+        station_b = route[i + 1]
+
+        lines = find_connection_lines(underground, station_a, station_b)
+
+        if lines:
+            if current_line is None:
+                current_line = lines[0]
+                print("Board the", current_line, "Line at", station_a)
+
+            elif current_line not in lines:
+                print("Travel to", station_a)
+                current_line = lines[0]
+                print("Change to the", current_line, "Line at", station_a)
+
+        #    print(station_a, "->", station_b, ":", lines[0], "Line")
+
+    if len(route) > 1:
+        print("Travel to", route[-1])

@@ -1,6 +1,6 @@
 import json
 
-from display import display_route
+from display import display_route, display_journey_lines
 from routing import find_shortest_route, find_all_shortest_routes, count_interchanges
 from graph import build_graph
 
@@ -42,6 +42,7 @@ else:
 
     print("\nRecommended journey:")
     display_route(best_route)
+    display_journey_lines(underground, best_route)
 
     best_changes = count_interchanges(underground, best_route)
     print(f"Interchanges required: {best_changes}")
