@@ -23,10 +23,26 @@ def display_journey_lines(underground, route):
         station_b = route[i + 1]
 
         lines = find_connection_lines(underground, station_a, station_b)
+        continuing_lines = set()
+
+        if i + 2 < len(route):
+            next_station = route[i + 2]
+            next_lines = find_connection_lines(
+            underground, station_b, next_station
+        )
+
+            continuing_lines = set(lines) & set(next_lines)
+        #    print("DEBUG - Continuing lines:", continuing_lines)
 
         if lines:
             if current_line is None:
-                current_line = lines[0]
+                if continuing_lines:
+                    current_line = next(
+                        line for line in lines if line in continuing_lines
+                    )
+                else:
+                    current_line = lines[0]
+
                 print("Board the", current_line, "Line at", station_a)
 
             elif current_line not in lines:
