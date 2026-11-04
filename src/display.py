@@ -12,6 +12,10 @@ def display_route(route):
 def display_journey_lines(underground, route):
     print("\nJourney line instructions:")
 
+    if len(route) == 1:
+        print("You are already at your destination!")
+        return
+
     current_line = None
 
     for i in range(len(route) - 1):
