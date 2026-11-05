@@ -1,4 +1,5 @@
 from graph import find_connection_lines
+import heapq
 
 def calculate_route(stations, start_station, destination):
 
@@ -104,13 +105,66 @@ def count_interchanges(underground, route):
             common_lines = previous_lines & lines
 
             if common_lines:
-               previous_lines = common_lines
+                previous_lines = common_lines
             else:
 
-               interchange_count += 1
-               previous_lines = lines
-            
+                interchange_count += 1
+                previous_lines = lines
+
         else:
             previous_lines = lines
 
     return interchange_count
+
+
+def find_fewest_interchanges_route(underground, network, start_station, destination):
+    queue = []
+
+    best_cost = {
+        (start_station, None): (0, 0)
+    }
+
+    heapq.heappush(queue, (0, 0, start_station, None, [start_station]))
+
+    while queue:
+        interchanges, stops, current_station, current_line, route = heapq.heappop(queue)
+
+        state = (current_station, current_line)
+        cost = (interchanges, stops)
+
+        if cost > best_cost[state]:
+            continue
+
+        if current_station == destination:
+            return route
+
+        for next_station in network[current_station]:
+        #    print("Exploring:", current_station, "->", next_station)
+
+            available_lines = find_connection_lines(
+                underground, current_station, next_station
+            )
+
+            for line in available_lines:
+                new_interchanges = interchanges
+
+                if current_line is not None and current_line != line:
+                    new_interchanges += 1
+
+                new_stops = stops + 1
+
+                new_route = route + [next_station]
+
+                state = (next_station, line)
+                new_cost = (new_interchanges, new_stops)
+
+                if state in best_cost and new_cost >= best_cost[state]:
+                    continue
+
+                best_cost[state] = new_cost
+
+                heapq.heappush(
+                    queue,
+                    (new_interchanges, new_stops, next_station, line, new_route)
+                )
+    return None
