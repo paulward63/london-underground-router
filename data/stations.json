@@ -287,6 +287,84 @@
     "Waterloo & City": [
         "Waterloo",
         "Bank"
-    ]
+    ],
+    "District": {
+        "Edgware Road Branch": [
+            "Earl's Court",
+            "High Street Kensington",
+            "Notting Hill Gate",
+            "Bayswater",
+            "Paddington",
+            "Edgware Road"
+        ],
+        "Upminster Branch": [
+            "Earl's Court",
+            "Gloucester Road",
+            "South Kensington",
+            "Sloane Square",
+            "Victoria",
+            "St. James's Park",
+            "Westminster",
+            "Embankment",
+            "Temple",
+            "Blackfriars",
+            "Mansion House",
+            "Cannon Street",
+            "Monument",
+            "Tower Hill",
+            "Aldgate East",
+            "Whitechapel",
+            "Stepney Green",
+            "Mile End",
+            "Bow Road",
+            "Bromley-by-Bow",
+            "West Ham",
+            "Plaistow",
+            "Upton Park",
+            "East Ham",
+            "Barking",
+            "Upney",
+            "Becontree",
+            "Dagenham Heathway",
+            "Dagenham East",
+            "Elm Park",
+            "Hornchurch",
+            "Upminster Bridge",
+            "Upminster"
+        ],
+        "Wimbledon Branch": [
+            "Earl's Court",
+            "West Brompton",
+            "Fulham Broadway",
+            "Parsons Green",
+            "Putney Bridge",
+            "East Putney",
+            "Southfields",
+            "Wimbledon Park",
+            "Wimbledon"
+        ],
+        "Richmond Branch": [
+            "Earl's Court",
+            "West Kensington",
+            "Barons Court",
+            "Hammersmith",
+            "Ravenscourt Park",
+            "Stamford Brook",
+            "Turnham Green",
+            "Gunnersbury",
+            "Kew Gardens",
+            "Richmond"
+        ],
+        "Ealing Broadway Branch": [
+            "Turnham Green",
+            "Chiswick Park",
+            "Acton Town",
+            "Ealing Common",
+            "Ealing Broadway"
+        ],
+        "Kensington Olympia Branch": [
+            "Earl's Court",
+            "Kensington (Olympia)"
+        ]
+    }
 }
-
