@@ -124,10 +124,10 @@ def find_fewest_interchanges_route(underground, network, start_station, destinat
         (start_station, None): (0, 0)
     }
 
-    heapq.heappush(queue, (0, 0, start_station, None, [start_station]))
+    heapq.heappush(queue, (0, 0, start_station, None, [start_station], []))
 
     while queue:
-        interchanges, stops, current_station, current_line, route = heapq.heappop(queue)
+        interchanges, stops, current_station, current_line, route, route_lines = heapq.heappop(queue)
 
         state = (current_station, current_line)
         cost = (interchanges, stops)
@@ -136,10 +136,10 @@ def find_fewest_interchanges_route(underground, network, start_station, destinat
             continue
 
         if current_station == destination:
-            return route
+            return route, route_lines
 
         for next_station in network[current_station]:
-        #    print("Exploring:", current_station, "->", next_station)
+            #    print("Exploring:", current_station, "->", next_station)
 
             available_lines = find_connection_lines(
                 underground, current_station, next_station
@@ -154,6 +154,7 @@ def find_fewest_interchanges_route(underground, network, start_station, destinat
                 new_stops = stops + 1
 
                 new_route = route + [next_station]
+                new_route_lines = route_lines + [line]
 
                 state = (next_station, line)
                 new_cost = (new_interchanges, new_stops)
@@ -165,6 +166,6 @@ def find_fewest_interchanges_route(underground, network, start_station, destinat
 
                 heapq.heappush(
                     queue,
-                    (new_interchanges, new_stops, next_station, line, new_route)
+                    (new_interchanges, new_stops, next_station, line, new_route, new_route_lines)
                 )
     return None

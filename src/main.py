@@ -1,6 +1,10 @@
 import json
 
-from display import display_route, display_journey_lines
+from display import (
+    display_route,
+    display_journey_lines,
+    display_dijkstra_journey
+)
 from routing import (
     find_shortest_route,
     find_all_shortest_routes,
@@ -22,16 +26,27 @@ print(f"Network successfully built with {len(network)} stations.")
 start_station = input("Enter Your Starting Station: ").strip()
 destination = input("Enter Your Destination: ").strip()
 
-fewest_changes_route = find_fewest_interchanges_route(
+result = find_fewest_interchanges_route(
     underground, network, start_station, destination
 )
 
-print("\nFewest-interchanges route:")
-print(fewest_changes_route)
+if result is not None:
+    fewest_changes_route, route_lines = result
 
-if fewest_changes_route is not None:
+    print("\nFewest-interchanges route:")
+    print(fewest_changes_route)
+    print("Lines used:", " → ".join(dict.fromkeys(route_lines)))
+
     print("Stops:", len(fewest_changes_route) - 1)
-    print("Interchanges:", count_interchanges(underground, fewest_changes_route))
+    print(
+        "Interchanges:",
+        sum(route_lines[i] != route_lines[i - 1] for i in range(1, len(route_lines))),
+    )
+    
+    display_dijkstra_journey(fewest_changes_route, route_lines)
+
+else:
+    print("No route found.")
 
 if start_station not in network:
     print(f"Unknown starting station: {start_station}")
@@ -64,3 +79,22 @@ else:
 
     best_changes = count_interchanges(underground, best_route)
     print(f"Interchanges required: {best_changes}")
+
+    def display_dijkstra_journey(route, route_lines):
+        print("\nYour journey instructions:")
+
+        if not route:
+            print("No journey available.")
+            return
+
+        if not route_lines:
+            print("You are already at your destination.")
+            return
+
+        print(f"Board the {route_lines[0]} Line at {route[0]}.")
+
+        for i in range(1, len(route_lines)):
+            if route_lines[i] != route_lines[i - 1]:
+                print(f"Change to the {route_lines[i]} Line at {route[i]}.")
+
+        print(f"Alight at {route[-1]}.")

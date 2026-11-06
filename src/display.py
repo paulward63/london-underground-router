@@ -54,3 +54,23 @@ def display_journey_lines(underground, route):
 
     if len(route) > 1:
         print("Travel to", route[-1])
+
+
+def display_dijkstra_journey(route, route_lines):
+    print("\nYour journey instructions:")
+
+    if not route:
+        print("No journey available.")
+        return
+
+    if not route_lines:
+        print("You are already at your destination.")
+        return
+
+    print(f"Board the {route_lines[0]} Line at {route[0]}.")
+
+    for i in range(1, len(route_lines)):
+        if route_lines[i] != route_lines[i - 1]:
+            print(f"Change to the {route_lines[i]} Line at {route[i]}.")
+
+    print(f"Alight at {route[-1]}.")
