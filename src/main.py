@@ -57,9 +57,15 @@ elif destination not in network:
 else:
     route = find_shortest_route(network, start_station, destination)
 
-    all_routes = find_all_shortest_routes(
-        network, start_station, destination
-    )
+    print("DEBUG: Starting alternative route search...", flush=True)
+
+    # all_routes = find_all_shortest_routes(
+    #    network, start_station, destination
+    # )
+
+    all_routes = [fewest_changes_route]
+
+    print("DEBUG: Alternative route search finished!", flush=True)
 
     print("\nAlternative shortest routes:")    
 

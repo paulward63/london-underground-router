@@ -88,6 +88,7 @@ def find_all_shortest_routes(network, start_station, destination):
             if connected_station not in route:
                 new_route = route + [connected_station]
                 queue.append(new_route)
+                shortest_length = None
 
     return shortest_routes
 
