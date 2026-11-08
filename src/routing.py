@@ -70,6 +70,7 @@ def find_all_shortest_routes(network, start_station, destination):
     queue = [[start_station]]
     shortest_routes = []
     shortest_length = None
+    distances = {start_station: 0}
 
     while queue:
         route = queue.pop(0)
@@ -85,10 +86,12 @@ def find_all_shortest_routes(network, start_station, destination):
             continue
 
         for connected_station in network[current_station]:
-            if connected_station not in route:
+            new_distance = distances[current_station] + 1
+
+            if connected_station not in distances or new_distance <= distances[connected_station]:
+                distances[connected_station] = new_distance
                 new_route = route + [connected_station]
                 queue.append(new_route)
-                shortest_length = None
 
     return shortest_routes
 
