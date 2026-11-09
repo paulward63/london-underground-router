@@ -1,1 +1,10 @@
 station_a,station_b,line,minutes,source
+Amersham,Chalfont & Latimer,Metropolitan,4,tfl_timetable
+Battersea Power Station,Nine Elms,Northern,2,tfl_timetable
+Camden Town,Euston,Northern,3,tfl_timetable
+Hatton Cross,Heathrow Terminal 4,Piccadilly,3,tfl_timetable
+Heathrow Terminal 4,Heathrow Terminals 2 & 3,Piccadilly,6,tfl_timetable
+Heathrow Terminal 5,Heathrow Terminals 2 & 3,Piccadilly,6,tfl_timetable
+Kennington,Nine Elms,Northern,3,tfl_timetable
+Latimer Road,Wood Lane,Hammersmith & City,1,tfl_timetable
+Shepherd's Bush Market,Wood Lane,Hammersmith & City,1,tfl_timetable

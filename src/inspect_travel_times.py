@@ -22,81 +22,83 @@ shepherds_bush_mapping = {
     "Hammersmith & City": "Shepherd's Bush Market",
 }
 
-with open("data/stations.json", "r", encoding="utf-8") as file:
-    underground = json.load(file)
+if __name__ == "__main__":
 
-    print("Underground lines loaded:", len(underground))
+    with open("data/stations.json", "r", encoding="utf-8") as file:
+        underground = json.load(file)
 
-    network = build_graph(underground)
+        print("Underground lines loaded:", len(underground))
 
-    print("Unique station names:", len(network))
+        network = build_graph(underground)
 
-with open("data/tubedata.csv", "r", encoding="utf-8-sig") as file:
-    reader = csv.reader(file, skipinitialspace=True)
+        print("Unique station names:", len(network))
 
-    line_counts = {}
+    with open("data/tubedata.csv", "r", encoding="utf-8-sig") as file:
+        reader = csv.reader(file, skipinitialspace=True)
 
-    csv_stations = set()
+        line_counts = {}
 
-    for row in reader:
-        if len(row) != 6:
-            print("Skipping malformed CSV record:", row)
-            continue
+        csv_stations = set()
 
-        line_name = row[2]
+        for row in reader:
+            if len(row) != 6:
+                print("Skipping malformed CSV record:", row)
+                continue
 
-        station_a = row[0].strip()
-        station_b = row[1].strip()
+            line_name = row[2]
 
-        station_a = station_name_mapping.get(station_a, station_a)
-        station_b = station_name_mapping.get(station_b, station_b)
+            station_a = row[0].strip()
+            station_b = row[1].strip()
 
-        if line_name in bank_monument_mapping:
-            if station_a == "Bank/Monument":
-                station_a = bank_monument_mapping[line_name]
+            station_a = station_name_mapping.get(station_a, station_a)
+            station_b = station_name_mapping.get(station_b, station_b)
 
-            if station_b == "Bank/Monument":
-                station_b = bank_monument_mapping[line_name]
+            if line_name in bank_monument_mapping:
+                if station_a == "Bank/Monument":
+                    station_a = bank_monument_mapping[line_name]
 
-        # Handle the historical Shepherd's Bush station name
-        if line_name in shepherds_bush_mapping:
-            if station_a == "Shepherd's Bush":
-                station_a = shepherds_bush_mapping[line_name]
+                if station_b == "Bank/Monument":
+                    station_b = bank_monument_mapping[line_name]
 
-            if station_b == "Shepherd's Bush":
-                station_b = shepherds_bush_mapping[line_name]
+            # Handle the historical Shepherd's Bush station name
+            if line_name in shepherds_bush_mapping:
+                if station_a == "Shepherd's Bush":
+                    station_a = shepherds_bush_mapping[line_name]
 
-        csv_stations.add(station_a)
-        csv_stations.add(station_b)
+                if station_b == "Shepherd's Bush":
+                    station_b = shepherds_bush_mapping[line_name]
 
-        if line_name in ("2", '3"""'):
-            print("Unusual CSV record:", row)
+            csv_stations.add(station_a)
+            csv_stations.add(station_b)
 
-        if line_name not in line_counts:
-            line_counts[line_name] = 0
+            if line_name in ("2", '3"""'):
+                print("Unusual CSV record:", row)
 
-        line_counts[line_name] += 1
+            if line_name not in line_counts:
+                line_counts[line_name] = 0
 
-    print("\nUnderground connections by line:")
+            line_counts[line_name] += 1
 
-    for line, count in sorted(line_counts.items()):
-        print(f"{line}: {count} connections")
+        print("\nUnderground connections by line:")
 
-    print("\nUnique CSV station names:", len(csv_stations))
+        for line, count in sorted(line_counts.items()):
+            print(f"{line}: {count} connections")
 
-missing_from_network = csv_stations - set(network.keys())
+        print("\nUnique CSV station names:", len(csv_stations))
 
-print("\nCSV stations not found in our network:")
+    missing_from_network = csv_stations - set(network.keys())
 
-for station in sorted(missing_from_network):
-    print(station)
+    print("\nCSV stations not found in our network:")
 
-missing_from_csv = set(network.keys()) - csv_stations
+    for station in sorted(missing_from_network):
+        print(station)
 
-print("\nNetwork stations not found in CSV:")
+    missing_from_csv = set(network.keys()) - csv_stations
 
-for station in sorted(missing_from_csv):
-    print(station)
+    print("\nNetwork stations not found in CSV:")
+
+    for station in sorted(missing_from_csv):
+        print(station)
 
 # print("\nChecking Earl's Court station names:")
 
